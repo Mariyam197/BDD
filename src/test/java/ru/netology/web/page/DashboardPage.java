@@ -21,7 +21,7 @@ public class DashboardPage {
     }
 
     public int getCardBalance(int indexCard) {
-        val text = cards.get(indexCard).text();
+        val text = cards.get(indexCard - 1).text();
         return extractBalance(text);
     }
 
@@ -33,7 +33,7 @@ public class DashboardPage {
     }
 
     public TransferPage transferPage(int indexCardTo) {
-        actionButtons.get(indexCardTo).click();
+        actionButtons.get(indexCardTo - 1).click();
         return new TransferPage();
     }
 

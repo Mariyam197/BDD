@@ -2,7 +2,6 @@ package ru.netology.web.page;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
-
 import static com.codeborne.selenide.Selenide.$;
 
 public class TransferPage {
@@ -22,16 +21,5 @@ public class TransferPage {
         fromField.setValue(cardNum);
         transferButton.click();
         return new DashboardPage();
-    }
-
-    public void unsuccessfulTransfer(String cardNum, String amount) {
-        sumField.setValue(amount);
-        fromField.setValue(cardNum);
-        transferButton.click();
-        errorNotification.shouldBe(Condition.visible);
-    }
-
-    public void cancelTransfer() {
-        cancelButton.click();
     }
 }

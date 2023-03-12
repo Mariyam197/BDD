@@ -14,15 +14,14 @@ import ru.netology.web.page.VerificationPage;
 import static com.codeborne.selenide.Selenide.open;
 
 public class TemplateSteps {
-    private static LoginPage loginPage;
-    private static DashboardPage dashboardPage;
-    private static VerificationPage verificationPage;
-    private static TransferPage transferPage;
+    private LoginPage loginPage;
+    private DashboardPage dashboardPage;
+    private VerificationPage verificationPage;
+    private TransferPage transferPage;
 
     @Пусть("пользователь залогинен с именем {string} и паролем {string}")
     public void loginWithNameAndPassword(String login, String password) {
-        open("http://localhost:9999");
-        loginPage = new LoginPage();
+        loginPage = open("http://localhost:9999", LoginPage.class);
         verificationPage = loginPage.validLogin(login, password);
     }
 
@@ -32,16 +31,16 @@ public class TemplateSteps {
         dashboardPage = verificationPage.validVerify(verificationCode);
     }
 
-    @Когда("пользователь переводит {string} рублей с карты с номером {string} на свою {string} карту с главной страницы")
-    public void successfulTransfer(String amount, String cardFrom, String indexCardTo) {
-        transferPage = dashboardPage.transferPage(0);
+    @Когда("пользователь переводит {string} рублей с карты с номером {string} на свою {int} карту с главной страницы")
+    public void successfulTransfer(String amount, String cardFrom, int cardOn) {
+        transferPage = dashboardPage.transferPage(cardOn);
         transferPage.validTransfer(cardFrom, amount);
     }
 
-    @Тогда("баланс его {string} карты из списка на главной странице должен стать {string} рублей")
-    public void matchBalance(String indexCard, String expectedBalance) {
+    @Тогда("баланс его {} карты из списка на главной странице должен стать {} рублей")
+    public void matchBalance(int cardOn, int expectedBalance) {
         dashboardPage.reloadBalance();
-        int actualBalance = dashboardPage.getCardBalance(0);
-        Assertions.assertEquals(actualBalance, Integer.parseInt(expectedBalance));
+        int actualBalance = dashboardPage.getCardBalance(cardOn);
+        Assertions.assertEquals(actualBalance, expectedBalance);
     }
 }
